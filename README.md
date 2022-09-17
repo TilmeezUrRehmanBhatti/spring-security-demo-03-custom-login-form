@@ -144,3 +144,40 @@ File:WEB-INF/view/plain-login.jsp
 + If you change context path of app then link will work
 + Much better than hard-coding context path ...
 
+**Adding Login Error Message - Overview**
+
++ Spring Security's default login page had built-in support for error messages
++ For our custom login page, we need logic to handle for login error messages
+
+
+**Failed Login**
+
++ When login fails, by default Spring Security will ...
++ Send user back to your login page
++ Append an error parameter: **?error**
+
+**Development Process**
+
+1. Modify custom login form 
+   1. Check the **error** parameter 
+   2. If **error** exists, show an error message 
+
+_Step 1:Modify form - check for error_
+
+File:WEB_INF/view/plain-login.jsp
+```JSP
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+...
+<form:form action="..." mehod="...">
+  
+  <c:if test="${param.error != null}">
+    
+    <i>Sorry! You entered invalid username/password.</i>
+    
+  </c:if>
+  
+</form:form>
+...
+```
+
++ `<c:if test="${param.error != null}">` if error param then show message
