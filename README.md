@@ -218,3 +218,80 @@ Make note of this snippet. It permits all requests to CSS. No need for authentic
      registry.addResourceHandler("/css/**").addResourceLocations("/css/");
  }
  ```
+
+## Spring Security - Adding Custom Logout Support
+
+
+
+**Development Process**
+1. Add logout support to Spring Security Configuration
+2. Add logout button to JSP page
+3. Update login form to display "logged out" message
+
+_Step 1:Add logout support to Spring Security Configuration_
+```JAVA
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    
+    http.authorizeRequest()
+      .anyRequest ().authenticated()
+      .and()
+      .formLogin()
+        .loginPage("/showMyLoginPage")
+        .loginProcessingURL("/authenticateTheUser")
+        .permitAll()
+      .and()
+      .logout().permitAll();
+  }
+```
+
+_Step 2:Add logout button_
+
++ Send data to default logout URL:/logout
+    + By default, must use POST method
++ Logout URL will be handled by Spring Security Filters
+    + no coding required
+
+```JSP
+<form:form action="${pageContext.request.contextPath}/logout"
+           method="POST" >
+  
+  <input type="submit" value="Logout" />
+  
+</form:form>
+```
+
+**Logout Process**
++ When a logout is processed, by default Spring Security will ...
++ Invalidate user's HTTP session and remove session cookies, etc
++ Send user back to your login page
++ Append a logout parameter: **?logout**
+
+_Step 3:Update login form to display "logged out" message
+
+1. Update login form
+2. Check **logout** parameter
+3. If **logout** parameter exists, show "logged out" message
+
+
+**Modify Login form - check for "logout"**
+
+File:WEB_INF/view/plain-login.jsp
+```JSP
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+...
+<form:form action="..." mehod="...">
+  
+  <c:if test="${param.error != null}">
+    
+    <i>Sorry! You entered invalid username/password.</i>
+    
+  </c:if>
+  
+  User name: <input type="text" name="username" />
+  Password: <input type="password" name="password" />
+  
+</form:form>
+...
+```
+
