@@ -181,3 +181,40 @@ File:WEB_INF/view/plain-login.jsp
 ```
 
 + `<c:if test="${param.error != null}">` if error param then show message
+
+
+**Question:**
+
+What would be required to link a CSS file for Spring Security login form? For example, I'd like to have a CSS file (from src/main/webapp/css/style.css) for the style of the error message when using Spring Security login form. I suspect that it block the request to the CSS if i am not authenticated.
+
+By default, Spring Security will block all requests to the web app if the user is not authenticated. However, if you'd like to use a local CSS file on your login form then these are the basic steps:
+
+1. Create a separate CSS file
+
+2. Reference the CSS file in your login page
+
+3. Configure Spring Security to allow unauthenticated requests (permit all) to the "/css" directory
+
+4. Configure the all Java configuration to serve content from the "/css" directory
+
+**3.Configure Spring Security to allow unauthenticated requests (permit all)to the "/css" directory**
+
+Make note of this snippet. It permits all requests to CSS. No need for authentication. Here's the snippet
+
+```JAVA
+ http.authorizeRequests()
+                .antMatchers("/css/**").permitAll()
+                .anyRequest().authenticated()
+            .and()
+            .formLogin()
+                .loginPage("/showMyLoginPage")
+                .loginProcessingUrl("/authenticateTheUser")
+                .permitAll();        
+```
+**4. Configure the all Java configuration to serve content from the "/css" directory**
+```JAVA
+ @Override
+ public void addResourceHandlers(ResourceHandlerRegistry registry) {
+     registry.addResourceHandler("/css/**").addResourceLocations("/css/");
+ }
+ ```
