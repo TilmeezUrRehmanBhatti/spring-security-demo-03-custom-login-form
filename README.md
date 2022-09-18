@@ -349,3 +349,74 @@ Role(s): <security:authentication proerty="principal.authorities" />
 ```
 + **authorities** is same as user roles 
 
+### Spring Security - Restrict Access Based on Role
+
+**Our Example**
+
+<img src="https://user-images.githubusercontent.com/80107049/190900726-c1f849a0-3c40-4ecc-86e6-d8ae2fe362fd.png" width="500" />
+
+**Development Process**
+
+1. Create support controller code and view pages
+2. Update user roles
+3. Restrict Access based on Roles
+
+_Step 3:Restricting Access to Roles_
+
++ Update your Spring Security Java configuration file (.java)
++ General Syntax
+
+```Java
+antMatches(<<add path to match on >>).hasRole(<< authorited role >>)
+```
+
++ Restrict access to a given path "/systems/\*\*"
++ `.hasRole` is Single role
+
+```Java
+antMatches(<<add path to match on >>).hasAnyRole(<< authorited role >>)
+```
++ `.hasAnyRole` Any role in the list, comma-delimited list
+    + eg: "ADMIN", "DEVELOPER", "VIP", "PLATINUM"
+
+
+
+
+
+
+**Restrict Path to EMPLOYEE**
+
+```Java
+antMatches("/").hasRole("EMPLOYEE")
+```
+
+**Restrict Path/leader to MANAGER**
+
+```Java
+antMatches("/leaders/**").hasRole("MANAGER")
+```
+
++ Match on path: /leaders, And all sub-directories(\*\*)
+
+**Restrict Path/systems to ADMIN**
+
+```Java
+antMatches("/systems/**").hasRole("ADMIN")
+```
++ Match on path: /systems, And all sub-directories(\*\*)
+
+**All Together**
+
+```JAVA
+@Override
+protected void configure(HttpSecurity http) throws Exception {
+  
+  http.authorizedRequest ()
+    .antMatches("/").hasRole("EMPLOYEE")
+    .antMatches("/leaders/**").hasRole("MANAGER")
+    .antMatches("/systems/**").hasRole("ADMIN")
+    .and()
+    .formLogin()
+    ...
+  }
+```
