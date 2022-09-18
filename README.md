@@ -295,3 +295,57 @@ File:WEB_INF/view/plain-login.jsp
 ...
 ```
 
+### Spring Security - User Roles
+
+**Displaying User ID and Roles - Overview**
+
++ Spring Security provides JSP custom tags for Accessing user if and roles
+
+**Development Process**
+
+1. Update POM file for Spring Security JSP Tag Library
+2. Add Spring Security JSP Tag Library to JSP page
+3. Display User ID
+4. Display User Roles
+
+
+_Step 1:Update POM file for Spring Security JSP Tag Library_
+
+File:porm.xml
+```XML
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${springsecurity.version}</version>
+        </dependency>
+```
+
+_Step 3:Add Spring Security JSP Tag Library to JSP Page_
+
+```JSP
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+```
+
+_Step 3:Display UserID_
+
+File:home.jsp
+```JSP
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+
+...
+
+User: <security:authentication proerty="principal.username" />
+```
+
+_Step 4:Display Riles_
+
+File:home.jsp
+```JSP
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+
+...
+
+Role(s): <security:authentication proerty="principal.authorities" />
+```
++ **authorities** is same as user roles 
+
