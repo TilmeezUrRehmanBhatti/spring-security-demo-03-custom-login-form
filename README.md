@@ -420,3 +420,21 @@ protected void configure(HttpSecurity http) throws Exception {
     ...
   }
 ```
+
+**Display Content based on Roles - Overview**
+
+_Spring Security JSP Tags_
+```JSP
+    <security:authorize access="hasRole('MANAGER')">
+    <%--Add a link to point to / leaders ... this is for the manager--%>
+
+    <p>
+        <a href="${pageContext.request.contextPath}/leaders">LeaderShip Meeting</a>
+        (Only for Manager peoples)
+    </p>
+
+    </security:authorize>
+```
+
++ Only show this section for users with MANAGER role
++ Content not include in final generated HTML page
