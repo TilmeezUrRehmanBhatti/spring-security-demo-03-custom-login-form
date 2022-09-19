@@ -24,6 +24,7 @@
 
     <hr>
 
+    <security:authorize access="hasRole('MANAGER')">
     <%--Add a link to point to / leaders ... this is for the manager--%>
 
     <p>
@@ -31,11 +32,20 @@
         (Only for Manager peoples)
     </p>
 
-    <hr>
+    </security:authorize>
 
+
+
+    <security:authorize access="hasRole('ADMIN')">
     <%--Add a link to point to /systems--%>
-    <a href="${pageContext.request.contextPath}/systems">IT Systems Meeting</a>
-    (Only for Admin peoples)
+    <p>
+
+        <a href="${pageContext.request.contextPath}/systems">IT Systems Meeting</a>
+        (Only for Admin peoples)
+    </p>
+
+
+    </security:authorize>
 
     <%--ADD A LOUGOUT BUTTON--%>
     <form:form action="${pageContext.request.contextPath}/logout" method="post">
